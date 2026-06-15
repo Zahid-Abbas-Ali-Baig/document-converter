@@ -178,7 +178,7 @@ vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22
 
 | Tool | Description | Writes to disk |
 |------|-------------|----------------|
-| `convert_to_markdown` | Converts a file to Markdown and saves `{name}.md` beside the source | Yes |
+| `convert_to_markdown` | Converts a file or URL to Markdown and saves output (`.md` beside source, or `youtube-{id}.md` for YouTube URLs) | Yes |
 | `preview_markdown` | Returns Markdown in the chat response only | No |
 
 **Input:** absolute or relative path to a file on your machine (or a supported URL for YouTube).
@@ -278,13 +278,21 @@ Preview markdown for ./recordings/standup-notes.mp3 and list decisions made.
 
 ### YouTube URL
 
-**Prompt:**
+**Prompt (preview in chat):**
 
 ```
 Use preview_markdown on https://www.youtube.com/watch?v=EXAMPLE and summarize the main points.
 ```
 
-*Pass the URL as `file_path`. Requires the `youtube-transcription` extra.*
+**Prompt (save to file):**
+
+```
+Use convert_to_markdown on https://www.youtube.com/watch?v=EXAMPLE
+```
+
+**What happens:** MarkItDown fetches the watch page, extracts title/description/metadata, and appends captions via `youtube-transcript-api` when available. `convert_to_markdown` saves `youtube-EXAMPLE.md` in the server working directory.
+
+*Use `https://www.youtube.com/watch?v=...` format. Requires the `youtube-transcription` extra and an internet connection.*
 
 ---
 
