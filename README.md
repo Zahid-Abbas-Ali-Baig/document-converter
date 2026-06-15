@@ -75,7 +75,7 @@ Use `preview_markdown` to inspect conversion quality before saving, which is use
 
 ## Supported formats
 
-Conversion quality depends on [MarkItDown](https://github.com/microsoft/markitdown). Common inputs include:
+Conversion quality depends on [MarkItDown](https://github.com/microsoft/markitdown). This project installs **`markitdown[all]`** so PDF, Word, PowerPoint, Excel, images, audio, and more work out of the box.
 
 | Category | Examples |
 |----------|----------|
@@ -96,21 +96,21 @@ For the latest list and limitations, see the [MarkItDown documentation](https://
 
 **Option 1 — Install link (try this first)**
 
-1. [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D) — open this link (not the badge image alone)
+1. [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bYWxsXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D) — open this link (not the badge image alone)
 2. If Cursor does not open, copy the [deeplink](#cursor-deeplink-fallback) below into your **browser address bar** and press Enter
 3. Click **Install** when Cursor prompts you
 4. Open **Cursor Settings → MCP** and confirm `document-converter` appears (green / enabled)
 5. **Reload MCP** or restart Cursor if tools do not show up
 
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D)
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-light.svg)](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D)
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bYWxsXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D)
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-light.svg)](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bYWxsXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D)
 
 <a id="cursor-deeplink-fallback"></a>
 
 **Option 2 — Deeplink fallback** (Windows: paste into Chrome/Edge address bar):
 
 ```
-cursor://anysphere.cursor-deeplink/mcp/install?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D
+cursor://anysphere.cursor-deeplink/mcp/install?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bYWxsXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D
 ```
 
 **Option 3 — Manual (always works)**
@@ -126,6 +126,8 @@ cursor://anysphere.cursor-deeplink/mcp/install?name=document-converter&config=ey
       "args": [
         "--from",
         "git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter",
+        "--with",
+        "markitdown[all]",
         "document-converter-mcp"
       ]
     }
@@ -133,18 +135,18 @@ cursor://anysphere.cursor-deeplink/mcp/install?name=document-converter&config=ey
 }
 ```
 
-**Button does nothing?** On Windows, GitHub badge clicks often open the image URL without launching Cursor. Use the [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D) text link, the deeplink above, or manual JSON instead.
+**Button does nothing?** On Windows, GitHub badge clicks often open the image URL without launching Cursor. Use the [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bYWxsXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D) text link, the deeplink above, or manual JSON instead.
 
 ### VS Code
 
 Requires the [MCP extension](https://marketplace.visualstudio.com/items?itemName=modelcontextprotocol.mcp).
 
-[**Install in VS Code**](vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22git%2Bhttps%3A//github.com/Zahid-Abbas-Ali-Baig/document-converter%22%2C%22document-converter-mcp%22%5D%7D)
+[**Install in VS Code**](vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22git%2Bhttps%3A//github.com/Zahid-Abbas-Ali-Baig/document-converter%22%2C%22--with%22%2C%22markitdown%5Ball%5D%22%2C%22document-converter-mcp%22%5D%7D)
 
 Or use **Command Palette** → **MCP: Install Server** and paste:
 
 ```
-vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22git%2Bhttps%3A//github.com/Zahid-Abbas-Ali-Baig/document-converter%22%2C%22document-converter-mcp%22%5D%7D
+vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22git%2Bhttps%3A//github.com/Zahid-Abbas-Ali-Baig/document-converter%22%2C%22--with%22%2C%22markitdown%5Ball%5D%22%2C%22document-converter-mcp%22%5D%7D
 ```
 
 ---
@@ -218,6 +220,8 @@ Works on Windows, macOS, and Linux without cloning:
       "args": [
         "--from",
         "git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter",
+        "--with",
+        "markitdown[all]",
         "document-converter-mcp"
       ]
     }
@@ -292,7 +296,7 @@ It means the editor could not start its internal MCP host process. Common causes
 |------|--------|
 | 1 | **Fully quit** Cursor/VS Code (all windows), then reopen |
 | 2 | Install **[uv](https://docs.astral.sh/uv/)** — required for `uvx` one-click installs |
-| 3 | In a terminal, test: `uvx --from git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter document-converter-mcp` (it may sit idle; that is normal for stdio servers) |
+| 3 | In a terminal, test: `uvx --from git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter --with markitdown[all] document-converter-mcp` (it may sit idle; that is normal for stdio servers) |
 | 4 | Use **manual JSON** (clone repo + Python path) instead of the install link — see [Option B](#option-b--local-clone) |
 | 5 | **Cursor Settings → MCP** → remove `document-converter`, re-add manually, click refresh |
 | 6 | Update Cursor/VS Code to the **latest version** |
@@ -325,7 +329,7 @@ Replace paths with the real clone location. This avoids `uvx` and install deepli
 
 ### Install button does nothing (Windows)
 
-Use the [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D) text link, paste the [deeplink](#cursor-deeplink-fallback) in your browser, or use manual JSON above.
+Use the [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bYWxsXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D) text link, paste the [deeplink](#cursor-deeplink-fallback) in your browser, or use manual JSON above.
 
 ### Tools not visible after install
 

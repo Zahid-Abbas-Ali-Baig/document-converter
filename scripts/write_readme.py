@@ -14,6 +14,8 @@ MCP_CONFIG = {
     "args": [
         "--from",
         f"git+{REPO}",
+        "--with",
+        "markitdown[all]",
         "document-converter-mcp",
     ],
 }
@@ -117,7 +119,7 @@ Use `preview_markdown` to inspect conversion quality before saving, which is use
 
 ## Supported formats
 
-Conversion quality depends on [MarkItDown](https://github.com/microsoft/markitdown). Common inputs include:
+Conversion quality depends on [MarkItDown](https://github.com/microsoft/markitdown). This project installs **`markitdown[all]`** so PDF, Word, PowerPoint, Excel, images, audio, and more work out of the box.
 
 | Category | Examples |
 |----------|----------|
@@ -168,6 +170,8 @@ For the latest list and limitations, see the [MarkItDown documentation](https://
       "args": [
         "--from",
         "git+{REPO}",
+        "--with",
+        "markitdown[all]",
         "document-converter-mcp"
       ]
     }}
@@ -260,6 +264,8 @@ Works on Windows, macOS, and Linux without cloning:
       "args": [
         "--from",
         "git+{REPO}",
+        "--with",
+        "markitdown[all]",
         "document-converter-mcp"
       ]
     }}
@@ -334,7 +340,7 @@ It means the editor could not start its internal MCP host process. Common causes
 |------|--------|
 | 1 | **Fully quit** Cursor/VS Code (all windows), then reopen |
 | 2 | Install **[uv](https://docs.astral.sh/uv/)** — required for `uvx` one-click installs |
-| 3 | In a terminal, test: `uvx --from git+{REPO} document-converter-mcp` (it may sit idle; that is normal for stdio servers) |
+| 3 | In a terminal, test: `uvx --from git+{REPO} --with markitdown[all] document-converter-mcp` (it may sit idle; that is normal for stdio servers) |
 | 4 | Use **manual JSON** (clone repo + Python path) instead of the install link — see [Option B](#option-b--local-clone) |
 | 5 | **Cursor Settings → MCP** → remove `document-converter`, re-add manually, click refresh |
 | 6 | Update Cursor/VS Code to the **latest version** |
