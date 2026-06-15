@@ -9,13 +9,16 @@ REGISTRY = "io.github.Zahid-Abbas-Ali-Baig/document-converter"
 NAME = "document-converter"
 AUTHOR = "Zahid Abbas Ali Baig"
 
+# Document formats only — not markitdown[all] (pulls Azure prerelease deps uvx rejects).
+MARKITDOWN_EXTRAS = "markitdown[pdf,docx,pptx,xlsx,xls,outlook]"
+
 MCP_CONFIG = {
     "command": "uvx",
     "args": [
         "--from",
         f"git+{REPO}",
         "--with",
-        "markitdown[all]",
+        MARKITDOWN_EXTRAS,
         "document-converter-mcp",
     ],
 }
@@ -119,7 +122,7 @@ Use `preview_markdown` to inspect conversion quality before saving, which is use
 
 ## Supported formats
 
-Conversion quality depends on [MarkItDown](https://github.com/microsoft/markitdown). This project installs **`markitdown[all]`** so PDF, Word, PowerPoint, Excel, images, audio, and more work out of the box.
+Conversion quality depends on [MarkItDown](https://github.com/microsoft/markitdown). This project installs **`markitdown[pdf,docx,pptx,xlsx,xls,outlook]`** so common office and PDF formats work with `uvx` (we avoid `markitdown[all]` because it pulls Azure pre-release packages that `uv` cannot resolve by default).
 
 | Category | Examples |
 |----------|----------|
@@ -171,7 +174,7 @@ For the latest list and limitations, see the [MarkItDown documentation](https://
         "--from",
         "git+{REPO}",
         "--with",
-        "markitdown[all]",
+        "{MARKITDOWN_EXTRAS}",
         "document-converter-mcp"
       ]
     }}
@@ -265,7 +268,7 @@ Works on Windows, macOS, and Linux without cloning:
         "--from",
         "git+{REPO}",
         "--with",
-        "markitdown[all]",
+        "{MARKITDOWN_EXTRAS}",
         "document-converter-mcp"
       ]
     }}
@@ -340,7 +343,7 @@ It means the editor could not start its internal MCP host process. Common causes
 |------|--------|
 | 1 | **Fully quit** Cursor/VS Code (all windows), then reopen |
 | 2 | Install **[uv](https://docs.astral.sh/uv/)** — required for `uvx` one-click installs |
-| 3 | In a terminal, test: `uvx --from git+{REPO} --with markitdown[all] document-converter-mcp` (it may sit idle; that is normal for stdio servers) |
+| 3 | In a terminal, test: `uvx --from git+{REPO} --with {MARKITDOWN_EXTRAS} document-converter-mcp` (it may sit idle; that is normal for stdio servers) |
 | 4 | Use **manual JSON** (clone repo + Python path) instead of the install link — see [Option B](#option-b--local-clone) |
 | 5 | **Cursor Settings → MCP** → remove `document-converter`, re-add manually, click refresh |
 | 6 | Update Cursor/VS Code to the **latest version** |
