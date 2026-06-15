@@ -3,6 +3,15 @@
   "name": "@Zahid-Abbas-Ali-Baig/document-converter",
   "version": "1.0.0",
   "description": "Convert documents to Markdown using MarkItDown",
+  "author": {
+    "name": "Zahid Abbas Ali Baig",
+    "url": "https://github.com/Zahid-Abbas-Ali-Baig"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zahid-Abbas-Ali-Baig/document-converter"
+  },
+  "license": "MIT",
   "server": {
     "type": "python",
     "entry_point": "server",
