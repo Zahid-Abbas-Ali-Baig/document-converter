@@ -276,6 +276,63 @@ Clients with registry integration can install without manual JSON editing.
 
 ---
 
+## Troubleshooting
+
+### `Failed to acquire MessagePort` / `createMcpProcessChannelConnectionResult`
+
+This log line comes from **Cursor or VS Code**, not from document-converter itself:
+
+```
+[MCPService] Error creating client: Failed to acquire MessagePort for response channel 'vscode:createMcpProcessChannelConnectionResult'
+```
+
+It means the editor could not start its internal MCP host process. Common causes and fixes:
+
+| Step | Action |
+|------|--------|
+| 1 | **Fully quit** Cursor/VS Code (all windows), then reopen |
+| 2 | Install **[uv](https://docs.astral.sh/uv/)** — required for `uvx` one-click installs |
+| 3 | In a terminal, test: `uvx --from git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter document-converter-mcp` (it may sit idle; that is normal for stdio servers) |
+| 4 | Use **manual JSON** (clone repo + Python path) instead of the install link — see [Option B](#option-b--local-clone) |
+| 5 | **Cursor Settings → MCP** → remove `document-converter`, re-add manually, click refresh |
+| 6 | Update Cursor/VS Code to the **latest version** |
+| 7 | On macOS 26+, if MCP is broken globally, try Cursor’s `legacyMcpMode` workaround ([forum thread](https://forum.cursor.com/t/macos-26-mcpprocess-ipc-crash-loop-on-startup-agent-execution-fails-until-legacymcpmode-workaround-applied/160598)) |
+
+**Recommended fix for colleagues (most reliable):**
+
+```bash
+git clone https://github.com/Zahid-Abbas-Ali-Baig/document-converter.git
+cd document-converter
+python -m venv .venv
+.venv\Scripts\activate          # Windows
+pip install -r requirements.txt
+```
+
+Then in **Cursor → Settings → MCP**, add:
+
+```json
+{
+  "mcpServers": {
+    "document-converter": {
+      "command": "C:\\path\\to\\document-converter\\.venv\\Scripts\\python.exe",
+      "args": ["C:\\path\\to\\document-converter\\server.py"]
+    }
+  }
+}
+```
+
+Replace paths with the real clone location. This avoids `uvx` and install deeplinks entirely.
+
+### Install button does nothing (Windows)
+
+Use the [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D) text link, paste the [deeplink](#cursor-deeplink-fallback) in your browser, or use manual JSON above.
+
+### Tools not visible after install
+
+Reload MCP in settings or restart the editor. Confirm the server shows as **enabled** (not red/disabled).
+
+---
+
 ## License
 
 MIT License — see [LICENSE](LICENSE).
