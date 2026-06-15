@@ -162,17 +162,54 @@ cursor://anysphere.cursor-deeplink/mcp/install?name=document-converter&config=ey
 
 ### VS Code
 
-Requires **VS Code 1.102 or newer** — MCP is [built into VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers). There is **no separate MCP extension** to install from the Marketplace.
+Requires **VS Code 1.102 or newer** — MCP is [built into VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers). There is **no separate MCP extension** to install.
 
-[**Install in VS Code**](vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22git%2Bhttps%3A//github.com/Zahid-Abbas-Ali-Baig/document-converter%22%2C%22--with%22%2C%22markitdown%5Bpdf%2Cdocx%2Cpptx%2Cxlsx%2Cxls%2Coutlook%2Caudio-transcription%2Cyoutube-transcription%5D%22%2C%22document-converter-mcp%22%5D%7D)
+**Do not paste the `vscode://mcp/install?...` link as the server command.** That URL is only for one-click install in a browser. VS Code needs a real executable (`uvx`) in `mcp.json`.
 
-Or use **Command Palette** (`Ctrl+Shift+P`) → **MCP: Add Server** and paste:
+#### Option 1 — Manual config (recommended on Windows)
+
+1. **Command Palette** (`Ctrl+Shift+P`) → **MCP: Open User Configuration**
+2. Replace or add this (use your full `uvx` path if `uvx` is not on PATH — run `where uvx` in a terminal):
+
+```json
+{
+  "servers": {
+    "document-converter": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter",
+        "--with",
+        "markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription]",
+        "document-converter-mcp"
+      ]
+    }
+  }
+}
+```
+
+3. **MCP: List Servers** → start **document-converter** (or restart VS Code)
+
+**Windows example** if `uvx` is not found (`ENOENT`):
+
+```json
+"command": "C:\\Users\\YOUR_USER\\.local\\bin\\uvx.exe"
+```
+
+#### Option 2 — Add Server wizard
+
+**Command Palette** → **MCP: Add Server** → **stdio** → command `uvx` → add each arg on a separate line (do not paste the `vscode://` link).
+
+#### Option 3 — Install link
+
+Open this in your **browser** (not in the command field):
 
 ```
 vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22git%2Bhttps%3A//github.com/Zahid-Abbas-Ali-Baig/document-converter%22%2C%22--with%22%2C%22markitdown%5Bpdf%2Cdocx%2Cpptx%2Cxlsx%2Cxls%2Coutlook%2Caudio-transcription%2Cyoutube-transcription%5D%22%2C%22document-converter-mcp%22%5D%7D
 ```
 
-Manual config: **MCP: Open User Configuration** (global) or create `.vscode/mcp.json` (workspace). See [Add and manage MCP servers](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
+Docs: [Add and manage MCP servers](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
 
 ---
 
@@ -431,6 +468,15 @@ If you see errors about `azure-ai-contentunderstanding` or pre-releases, remove 
 ```
 markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription]
 ```
+
+### VS Code: `spawn vscode://mcp/install?... ENOENT`
+
+VS Code tried to run the **install link** as the server command. Fix:
+
+1. **MCP: Open User Configuration**
+2. Remove any server whose `command` starts with `vscode://`
+3. Use the `servers` + `uvx` JSON from [VS Code install](#vs-code) above
+4. **MCP: List Servers** → restart the server
 
 ### `Failed to acquire MessagePort`
 

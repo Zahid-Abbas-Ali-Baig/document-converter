@@ -211,17 +211,54 @@ For the latest upstream behavior, see the [MarkItDown documentation](https://git
 
 ### VS Code
 
-Requires **VS Code 1.102 or newer** — MCP is [built into VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers). There is **no separate MCP extension** to install from the Marketplace.
+Requires **VS Code 1.102 or newer** — MCP is [built into VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers). There is **no separate MCP extension** to install.
 
-[**Install in VS Code**]({vscode_link})
+**Do not paste the `vscode://mcp/install?...` link as the server command.** That URL is only for one-click install in a browser. VS Code needs a real executable (`uvx`) in `mcp.json`.
 
-Or use **Command Palette** (`Ctrl+Shift+P`) → **MCP: Add Server** and paste:
+#### Option 1 — Manual config (recommended on Windows)
+
+1. **Command Palette** (`Ctrl+Shift+P`) → **MCP: Open User Configuration**
+2. Replace or add this (use your full `uvx` path if `uvx` is not on PATH — run `where uvx` in a terminal):
+
+```json
+{{
+  "servers": {{
+    "document-converter": {{
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+{REPO}",
+        "--with",
+        "{MARKITDOWN_EXTRAS}",
+        "document-converter-mcp"
+      ]
+    }}
+  }}
+}}
+```
+
+3. **MCP: List Servers** → start **document-converter** (or restart VS Code)
+
+**Windows example** if `uvx` is not found (`ENOENT`):
+
+```json
+"command": "C:\\\\Users\\\\YOUR_USER\\\\.local\\\\bin\\\\uvx.exe"
+```
+
+#### Option 2 — Add Server wizard
+
+**Command Palette** → **MCP: Add Server** → **stdio** → command `uvx` → add each arg on a separate line (do not paste the `vscode://` link).
+
+#### Option 3 — Install link
+
+Open this in your **browser** (not in the command field):
 
 ```
 {vscode_link}
 ```
 
-Manual config: **MCP: Open User Configuration** (global) or create `.vscode/mcp.json` (workspace). See [Add and manage MCP servers](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
+Docs: [Add and manage MCP servers](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
 
 ---
 
@@ -480,6 +517,15 @@ If you see errors about `azure-ai-contentunderstanding` or pre-releases, remove 
 ```
 {MARKITDOWN_EXTRAS}
 ```
+
+### VS Code: `spawn vscode://mcp/install?... ENOENT`
+
+VS Code tried to run the **install link** as the server command. Fix:
+
+1. **MCP: Open User Configuration**
+2. Remove any server whose `command` starts with `vscode://`
+3. Use the `servers` + `uvx` JSON from [VS Code install](#vs-code) above
+4. **MCP: List Servers** → restart the server
 
 ### `Failed to acquire MessagePort`
 
