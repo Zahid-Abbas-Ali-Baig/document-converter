@@ -24,7 +24,7 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           HASH="${{ steps.mcpb-pack.outputs.bundle-sha256 }}"
-          jq --arg hash "$HASH" --arg version "$VERSION"             '.version = $version | .packages[0].version = $version | .packages[0].file_sha256 = $hash'             server.json > server.tmp.json
+          jq --arg hash "$HASH" --arg version "$VERSION"             '.version = $version | .packages[0].version = $version | .packages[0].fileSha256 = $hash'             server.json > server.tmp.json
           mv server.tmp.json server.json
           cat server.json
 

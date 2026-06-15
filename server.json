@@ -1,5 +1,5 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Zahid-Abbas-Ali-Baig/document-converter",
   "description": "Convert documents to Markdown using MarkItDown",
   "version": "1.0.0",
@@ -9,10 +9,10 @@
   },
   "packages": [
     {
-      "registry_type": "mcpb",
+      "registryType": "mcpb",
       "identifier": "https://github.com/Zahid-Abbas-Ali-Baig/document-converter/releases/download/v1.0.0/document-converter.mcpb",
       "version": "1.0.0",
-      "file_sha256": "93bdf3271a2fc68ac7244c2b3e0fd1cf7e2cd4c753b5598ddc91aab5e326c22a",
+      "fileSha256": "93bdf3271a2fc68ac7244c2b3e0fd1cf7e2cd4c753b5598ddc91aab5e326c22a",
       "transport": {
         "type": "stdio"
       }
