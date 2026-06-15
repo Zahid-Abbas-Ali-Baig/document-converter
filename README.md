@@ -565,8 +565,12 @@ Listed on the [official MCP Registry](https://registry.modelcontextprotocol.io) 
 
 **`io.github.Zahid-Abbas-Ali-Baig/document-converter`**
 
-- [Search registry](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.Zahid-Abbas-Ali-Baig/document-converter)
-- [GitHub Release v1.0.0](https://github.com/Zahid-Abbas-Ali-Baig/document-converter/releases/tag/v1.0.0) (`.mcpb` bundle)
+> This is a **registry identifier**, not a browser URL. Do not open `http://io.github.Zahid-Abbas-Ali-Baig/document-converter` — it will not load. Use the links below instead.
+
+- 🌐 [Browse MCP Registry](https://registry.modelcontextprotocol.io)
+- 🔍 [Search this server](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.Zahid-Abbas-Ali-Baig/document-converter)
+- 📂 [GitHub repository](https://github.com/Zahid-Abbas-Ali-Baig/document-converter)
+- 📥 [GitHub Release v1.0.0](https://github.com/Zahid-Abbas-Ali-Baig/document-converter/releases/tag/v1.0.0) (`.mcpb` bundle)
 
 ---
 
