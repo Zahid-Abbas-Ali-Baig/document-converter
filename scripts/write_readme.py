@@ -132,22 +132,50 @@ For the latest list and limitations, see the [MarkItDown documentation](https://
 
 ## Quick install
 
-**Requirement:** [uv](https://docs.astral.sh/uv/getting-started/installation/) (`uvx` is included). One-click installs pull the server from this repository automatically.
+**Requirement:** [uv](https://docs.astral.sh/uv/getting-started/installation/) (`uvx` is included) for one-click installs. See [manual setup](#configuration) if buttons do not work.
 
 ### Cursor
+
+**Option 1 — Install link (try this first)**
+
+1. [**Add to Cursor**]({cursor_web}) — open this link (not the badge image alone)
+2. If Cursor does not open, copy the [deeplink](#cursor-deeplink-fallback) below into your **browser address bar** and press Enter
+3. Click **Install** when Cursor prompts you
+4. Open **Cursor Settings → MCP** and confirm `document-converter` appears (green / enabled)
+5. **Reload MCP** or restart Cursor if tools do not show up
 
 [![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)]({cursor_web})
 [![Install MCP Server](https://cursor.com/deeplink/mcp-install-light.svg)]({cursor_web})
 
-1. Click an install button above ([Cursor MCP install docs](https://cursor.com/docs/mcp/install-links))
-2. Confirm when Cursor prompts you to add the server
-3. Restart or refresh MCP if needed, then use the tools in chat
+<a id="cursor-deeplink-fallback"></a>
 
-**Fallback deeplink** (paste in your browser if buttons do not work):
+**Option 2 — Deeplink fallback** (Windows: paste into Chrome/Edge address bar):
 
 ```
 {cursor_deeplink}
 ```
+
+**Option 3 — Manual (always works)**
+
+1. Open **Cursor → Settings → MCP → Add new MCP server**
+2. Paste this into your user or project `mcp.json`:
+
+```json
+{{
+  "mcpServers": {{
+    "{NAME}": {{
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+{REPO}",
+        "document-converter-mcp"
+      ]
+    }}
+  }}
+}}
+```
+
+**Button does nothing?** On Windows, GitHub badge clicks often open the image URL without launching Cursor. Use the [**Add to Cursor**]({cursor_web}) text link, the deeplink above, or manual JSON instead.
 
 ### VS Code
 
