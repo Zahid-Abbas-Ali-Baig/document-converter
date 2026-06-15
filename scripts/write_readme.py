@@ -73,8 +73,8 @@ Give your AI assistant the ability to **read PDFs, Office files, spreadsheets, e
 - [Quick install](#quick-install)
 - [Tools](#tools)
 - [Usage examples](#usage-examples)
-- [Manual installation](#manual-installation)
-- [Configuration](#configuration)
+- [Configuration reference](#configuration-reference)
+- [Local development](#local-development)
 - [MCP Registry](#mcp-registry)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
@@ -122,7 +122,7 @@ Once connected, your agent converts files locally and returns structured text �
 - **Local-first** — files stay on your machine; no third-party conversion service
 - **Broad format coverage** — PDF, Office, email, web, data, images, audio, and more
 - **Two workflows** — save Markdown next to the source, or preview in chat only
-- **One-click install** — deeplinks for Cursor and VS Code
+- **Copy-paste setup** — step-by-step install for Cursor, VS Code, and Claude Desktop
 - **Registry published** — listed on the [official MCP Registry](https://registry.modelcontextprotocol.io)
 - **MIT licensed** — free for personal and commercial use
 
@@ -162,38 +162,52 @@ For the latest upstream behavior, see the [MarkItDown documentation](https://git
 
 ## Quick install
 
-**Requirement:** [uv](https://docs.astral.sh/uv/getting-started/installation/) (`uvx` included). See [manual setup](#configuration) if buttons do not work.
+Follow the steps for your editor. Every config below uses the same command — only the JSON file and wrapper key differ.
 
-### Cursor
+### Before you start (all editors)
 
-**Option 1 — Install link (try this first)**
+1. **Install [uv](https://docs.astral.sh/uv/getting-started/installation/)** (includes `uvx`).
 
-1. [**Add to Cursor**]({cursor_web}) — open this link (not the badge image alone)
-2. If Cursor does not open, copy the [deeplink](#cursor-deeplink-fallback) into your **browser address bar**
-3. Click **Install** when prompted
-4. Open **Cursor Settings → MCP** and confirm `document-converter` is enabled
-5. **Reload MCP** or restart Cursor if tools do not appear
+   **Windows (PowerShell):**
+   ```powershell
+   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+   ```
 
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)]({cursor_web})
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-light.svg)]({cursor_web})
+   **macOS / Linux:**
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
 
-<a id="cursor-deeplink-fallback"></a>
+2. **Verify `uvx` works** (open a **new** terminal after installing):
 
-**Option 2 — Deeplink fallback** (Windows: paste into Chrome/Edge address bar):
+   ```bash
+   uvx --version
+   ```
 
-```
-{cursor_deeplink}
-```
+3. **Optional — test the server** (it will sit idle with no output; that is normal for stdio MCP):
 
-**Option 3 — Manual (always works)**
+   ```bash
+   uvx --from git+{REPO} --with {MARKITDOWN_EXTRAS} document-converter-mcp
+   ```
 
-1. Open **Cursor → Settings → MCP → Add new MCP server**
-2. Paste into user or project `mcp.json`:
+   Press `Ctrl+C` to stop.
+
+---
+
+### Install in Cursor
+
+1. Open **Cursor → Settings → MCP** (or edit your config file directly).
+2. **Config file location:**
+   - **Windows:** `%USERPROFILE%\\.cursor\\mcp.json`
+   - **macOS:** `~/.cursor/mcp.json`
+   - **Linux:** `~/.cursor/mcp.json`
+   - **Project-only:** `.cursor/mcp.json` in your project folder
+3. Add or merge this block inside `mcpServers` (copy the whole JSON):
 
 ```json
 {{
   "mcpServers": {{
-    "{NAME}": {{
+    "document-converter": {{
       "command": "uvx",
       "args": [
         "--from",
@@ -207,23 +221,36 @@ For the latest upstream behavior, see the [MarkItDown documentation](https://git
 }}
 ```
 
-**Button does nothing?** On Windows, badge clicks often open the image URL without launching Cursor. Use the [**Add to Cursor**]({cursor_web}) text link, the deeplink, or manual JSON.
+4. **Save** the file and **restart Cursor** (or click **Reload** next to MCP in settings).
+5. **Check:** Settings → MCP → `document-converter` should show **enabled** (green). Tools: `convert_to_markdown`, `preview_markdown`.
 
-### VS Code
+<details>
+<summary>Cursor one-click install (optional — if manual JSON fails, use this)</summary>
 
-Requires **VS Code 1.102 or newer** — MCP is [built into VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
+1. Open this link in your browser: [**Add to Cursor**]({cursor_web})
+2. Or paste into the browser address bar:
 
-> **The `vscode://mcp/install?...` link is broken in many VS Code builds** — it writes the URL as the `command` and fails with `spawn vscode://mcp/install?... ENOENT`. **Do not use it.** Use the config below instead.
+```
+{cursor_deeplink}
+```
 
-#### Option 1 — Workspace config (easiest if you cloned this repo)
+3. Click **Install** in Cursor, then restart if tools do not appear.
 
-This repo includes [`.vscode/mcp.json`](.vscode/mcp.json) with the correct server. Open the folder in VS Code, then **MCP: List Servers** → start **document-converter**.
+</details>
 
-#### Option 2 — User config (manual)
+---
 
-1. **Delete** any broken auto-generated servers (names like `my-mcp-server-*` whose `command` starts with `vscode://`)
-2. **Command Palette** (`Ctrl+Shift+P`) → **MCP: Open User Configuration**
-3. Paste:
+### Install in VS Code
+
+Requires **VS Code 1.102+** with [built-in MCP support](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
+
+> **Do not paste `vscode://mcp/install?...` anywhere.** That link is broken in VS Code and creates servers like `my-mcp-server-*` with `spawn vscode://... ENOENT`. Use the JSON below.
+
+#### Method A — Copy-paste user config (recommended)
+
+1. **Ctrl+Shift+P** → **MCP: Open User Configuration**
+2. **Delete** any broken servers where `"command"` starts with `vscode://` (e.g. `my-mcp-server-15e7e771`).
+3. **Replace** the file contents with (or merge `servers` into your existing file):
 
 ```json
 {{
@@ -243,19 +270,79 @@ This repo includes [`.vscode/mcp.json`](.vscode/mcp.json) with the correct serve
 }}
 ```
 
-4. **MCP: List Servers** → start **document-converter**
+4. **Save**, then **Ctrl+Shift+P** → **MCP: List Servers** → start **document-converter**.
 
-**Windows:** if `uvx` is not found, use the full path from `where uvx`:
+**If you get `uvx` not found (`ENOENT`):** run `where uvx` (Windows) or `which uvx` (macOS/Linux) and set `"command"` to the full path:
 
 ```json
 "command": "C:\\\\Users\\\\YOUR_USER\\\\.local\\\\bin\\\\uvx.exe"
 ```
 
-#### Option 3 — Add Server wizard
+#### Method B — Open this repo in VS Code
 
-**MCP: Add Server** → **stdio** → command `uvx` → add each arg separately (never paste a `vscode://` link).
+1. `git clone {REPO}.git`
+2. **File → Open Folder** → select `document-converter`
+3. VS Code loads [`.vscode/mcp.json`](.vscode/mcp.json) automatically
+4. **Ctrl+Shift+P** → **MCP: List Servers** → start **document-converter**
 
-Docs: [Add and manage MCP servers](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
+#### Method C — Add Server wizard
+
+**Ctrl+Shift+P** → **MCP: Add Server** → choose **stdio**, then enter:
+
+| Field | Value |
+|-------|-------|
+| **Command** | `uvx` |
+| **Arg 1** | `--from` |
+| **Arg 2** | `git+{REPO}` |
+| **Arg 3** | `--with` |
+| **Arg 4** | `{MARKITDOWN_EXTRAS}` |
+| **Arg 5** | `document-converter-mcp` |
+
+---
+
+### Install in Claude Desktop
+
+1. Open Claude Desktop config:
+   - **Windows:** `%APPDATA%\\Claude\\claude_desktop_config.json`
+   - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+2. Add inside `mcpServers`:
+
+```json
+{{
+  "mcpServers": {{
+    "document-converter": {{
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+{REPO}",
+        "--with",
+        "{MARKITDOWN_EXTRAS}",
+        "document-converter-mcp"
+      ]
+    }}
+  }}
+}}
+```
+
+3. **Restart Claude Desktop**.
+
+---
+
+### Verify it works
+
+Ask your AI assistant:
+
+```
+List the tools from document-converter MCP.
+```
+
+Or:
+
+```
+Preview markdown for a PDF on my machine at C:\\path\\to\\file.pdf
+```
+
+You should see `convert_to_markdown` and `preview_markdown` being called.
 
 ---
 
@@ -401,9 +488,9 @@ Quality depends on the source document layout and MarkItDown version.
 
 ---
 
-## Manual installation
+## Local development
 
-Clone the repository if you prefer a local virtual environment over `uvx`.
+Clone if you prefer a local virtual environment over `uvx`.
 
 ```bash
 git clone {REPO}.git
@@ -433,30 +520,30 @@ python server.py
 
 ---
 
-## Configuration
+## Configuration reference
 
-### Option A — `uvx` (recommended)
+All clients run the same underlying command:
 
-No clone required; works on Windows, macOS, and Linux:
+| Part | Value |
+|------|-------|
+| **Command** | `uvx` |
+| **Arg 1** | `--from` |
+| **Arg 2** | `git+{REPO}` |
+| **Arg 3** | `--with` |
+| **Arg 4** | `{MARKITDOWN_EXTRAS}` |
+| **Arg 5** | `document-converter-mcp` |
 
-```json
-{{
-  "mcpServers": {{
-    "{NAME}": {{
-      "command": "uvx",
-      "args": [
-        "--from",
-        "git+{REPO}",
-        "--with",
-        "{MARKITDOWN_EXTRAS}",
-        "document-converter-mcp"
-      ]
-    }}
-  }}
-}}
-```
+### Config file locations
 
-### Option B — local clone
+| Client | File | JSON root key |
+|--------|------|----------------|
+| **Cursor** | `%USERPROFILE%\\.cursor\\mcp.json` or `.cursor/mcp.json` | `mcpServers` |
+| **VS Code** | User MCP config or `.vscode/mcp.json` | `servers` (+ `"type": "stdio"`) |
+| **Claude Desktop** | `claude_desktop_config.json` | `mcpServers` |
+
+Copy-paste configs are in [Quick install](#quick-install).
+
+### Local clone (no `uvx`)
 
 Replace `REPO_PATH` with the absolute path to your clone.
 
@@ -486,10 +573,10 @@ Replace `REPO_PATH` with the absolute path to your clone.
 }}
 ```
 
-| Client | Config location |
-|--------|-----------------|
-| Cursor | `.cursor/mcp.json` (project) or user MCP settings |
-| VS Code | User `mcp.json` or `.vscode/mcp.json` ([docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)) |
+| Client | Config file |
+|--------|-------------|
+| Cursor | `.cursor/mcp.json` or user MCP settings |
+| VS Code | `.vscode/mcp.json` or user `mcp.json` ([docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)) |
 | Claude Desktop | `claude_desktop_config.json` |
 
 ---
@@ -564,9 +651,9 @@ pip install -r requirements.txt
 }}
 ```
 
-### Install button does nothing (Windows)
+### Install button does nothing (Cursor on Windows)
 
-Use [**Add to Cursor**]({cursor_web}), the [deeplink](#cursor-deeplink-fallback), or manual JSON.
+Use the copy-paste JSON in [Install in Cursor](#install-in-cursor) instead of the install badge.
 
 ### Tools not visible
 
