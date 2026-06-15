@@ -8,6 +8,10 @@ mcp = FastMCP("DocumentConverter")
 def convert_to_markdown(file_path: str) -> str:
     """
     Convert a document to Markdown and save beside the original file.
+
+    Supports PDF, Word (.docx), PowerPoint (.pptx), Excel (.xlsx/.xls),
+    Outlook (.msg), HTML, CSV, JSON, XML, images, ZIP archives, EPUB,
+    audio (.mp3/.wav), and YouTube URLs (via MarkItDown).
     """
 
     if not os.path.exists(file_path):
@@ -27,7 +31,10 @@ def convert_to_markdown(file_path: str) -> str:
 @mcp.tool()
 def preview_markdown(file_path: str) -> str:
     """
-    Preview markdown without saving.
+    Preview Markdown conversion without saving to disk.
+
+    Same format support as convert_to_markdown. Use for quick inspection
+    before writing files or when you only need content in the chat.
     """
 
     md = MarkItDown()

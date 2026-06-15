@@ -1,12 +1,17 @@
 # Document Converter MCP
 
-> Turn office documents into clean Markdown inside your AI editor — powered by [MarkItDown](https://github.com/microsoft/markitdown) and the [Model Context Protocol (MCP)](https://modelcontextprotocol.io).
+<p align="center">
+  <strong>Convert documents to Markdown inside Cursor, VS Code, and any MCP client.</strong><br>
+  Local processing · No cloud upload · Powered by <a href="https://github.com/microsoft/markitdown">MarkItDown</a>
+</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![MCP Registry](https://img.shields.io/badge/MCP-Registry-green.svg)](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.Zahid-Abbas-Ali-Baig/document-converter)
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python 3.10+"></a>
+  <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.Zahid-Abbas-Ali-Baig/document-converter"><img src="https://img.shields.io/badge/MCP-Registry-green.svg" alt="MCP Registry"></a>
+</p>
 
-Give Cursor, VS Code, Claude Desktop, and other MCP clients the ability to read and convert PDFs, Word files, spreadsheets, and more into Markdown that models can reason over.
+Give your AI assistant the ability to **read PDFs, Office files, spreadsheets, emails, audio, and more** as clean Markdown — so it can summarize, search, and reason over content instead of struggling with binary attachments.
 
 ---
 
@@ -18,21 +23,25 @@ Give Cursor, VS Code, Claude Desktop, and other MCP clients the ability to read 
 - [Supported formats](#supported-formats)
 - [Quick install](#quick-install)
 - [Tools](#tools)
+- [Usage examples](#usage-examples)
 - [Manual installation](#manual-installation)
 - [Configuration](#configuration)
 - [MCP Registry](#mcp-registry)
+- [Troubleshooting](#troubleshooting)
 - [License](#license)
 
 ---
 
 ## Overview
 
-**Document Converter MCP** is a lightweight stdio MCP server that wraps Microsoft's MarkItDown library. Once connected, your AI assistant can:
+**Document Converter MCP** is a lightweight stdio server that wraps Microsoft's [MarkItDown](https://github.com/microsoft/markitdown) library for the [Model Context Protocol](https://modelcontextprotocol.io).
 
-- Convert a file on disk to Markdown and save it next to the original
-- Preview Markdown output in the chat without writing files
-
-No cloud upload is required — conversion runs locally on your machine.
+```mermaid
+flowchart LR
+  A[Your file on disk] --> B[Document Converter MCP]
+  B --> C[MarkItDown]
+  C --> D[Markdown in chat or .md file]
+```
 
 | | |
 |---|---|
@@ -40,83 +49,97 @@ No cloud upload is required — conversion runs locally on your machine.
 | **Repository** | [https://github.com/Zahid-Abbas-Ali-Baig/document-converter](https://github.com/Zahid-Abbas-Ali-Baig/document-converter) |
 | **Transport** | stdio |
 | **Author** | Zahid Abbas Ali Baig |
+| **Dependencies** | `markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription]` |
+
+Once connected, your agent converts files locally and returns structured text — nothing is sent to a conversion API.
 
 ---
 
 ## Use cases
 
-### Research and knowledge work
-Ask your agent to convert downloaded PDF papers or reports into Markdown, then summarize, compare, or extract citations without copy-pasting from a PDF viewer.
-
-### Documentation pipelines
-Batch-convert Word (`.docx`) or PowerPoint (`.pptx`) drafts into Markdown for wikis, static sites, or Git repositories while keeping a `.md` file beside each source document.
-
-### Code and product teams
-Preview slide decks or spec documents inside Cursor or VS Code before writing tickets, README updates, or release notes — the model sees structured text instead of binary attachments.
-
-### Data and operations
-Turn Excel (`.xlsx`) exports into Markdown tables the assistant can filter, explain, or transform into SQL, charts, or reports.
-
-### Content review
-Use `preview_markdown` to inspect conversion quality before saving, which is useful for sensitive or large files you do not want written to disk yet.
+| Scenario | What you gain |
+|----------|----------------|
+| **Research** | Turn PDF papers into Markdown, then ask for summaries, comparisons, or citations |
+| **Documentation** | Convert `.docx` / `.pptx` drafts into `.md` beside the source for wikis or Git |
+| **Product & engineering** | Preview specs and slide decks in chat before writing tickets or release notes |
+| **Data & ops** | Convert Excel exports into tables the model can filter, explain, or transform |
+| **Email & archives** | Extract text from `.msg` / `.eml` or ZIP contents without manual copy-paste |
+| **Media** | Transcribe `.mp3` / `.wav` or fetch YouTube captions into editable Markdown |
 
 ---
 
 ## Features
 
-- **Local processing** — files stay on your machine; no third-party conversion API
-- **Two tools** — convert-and-save or preview-only workflows
-- **Broad format support** — PDF, Office, HTML, images, and more (via MarkItDown)
-- **One-click setup** — install buttons for Cursor and VS Code
-- **Registry published** — discoverable on the [official MCP Registry](https://registry.modelcontextprotocol.io)
+- **Local-first** — files stay on your machine; no third-party conversion service
+- **Broad format coverage** — PDF, Office, email, web, data, images, audio, and more
+- **Two workflows** — save Markdown next to the source, or preview in chat only
+- **One-click install** — deeplinks for Cursor and VS Code
+- **Registry published** — listed on the [official MCP Registry](https://registry.modelcontextprotocol.io)
 - **MIT licensed** — free for personal and commercial use
 
 ---
 
 ## Supported formats
 
-Conversion quality depends on [MarkItDown](https://github.com/microsoft/markitdown). This project installs **`markitdown[pdf,docx,pptx,xlsx,xls,outlook]`** so common office and PDF formats work with `uvx` (we avoid `markitdown[all]` because it pulls Azure pre-release packages that `uv` cannot resolve by default).
+This project installs **`markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription]`** — the widest MarkItDown extras set that installs cleanly with `uvx`. We avoid `markitdown[all]` because it pulls Azure pre-release packages that `uv` cannot resolve by default.
 
-| Category | Examples |
-|----------|----------|
-| Documents | PDF, `.docx`, `.pptx`, `.xlsx` |
-| Web & text | HTML, CSV, JSON, XML |
-| Media | Images (text extraction where supported) |
-| Archives | ZIP (contents processed when applicable) |
+| Category | Extensions / inputs | Notes |
+|----------|---------------------|-------|
+| **PDF** | `.pdf` | Text extraction via MarkItDown PDF handler |
+| **Word** | `.docx` | Headings, paragraphs, tables |
+| **PowerPoint** | `.pptx` | Slide text and structure |
+| **Excel** | `.xlsx`, `.xls` | Modern and legacy workbooks |
+| **Outlook** | `.msg` | Email body and metadata |
+| **Web** | `.html`, `.htm` | Static HTML pages |
+| **Data & text** | `.csv`, `.json`, `.xml`, `.txt`, `.md` | Structured and plain text |
+| **Images** | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp` | EXIF metadata; OCR when supported |
+| **Archives** | `.zip` | Processes supported files inside the archive |
+| **E-books** | `.epub` | Chapter text extraction |
+| **Email** | `.eml` | RFC 822 messages |
+| **Audio** | `.mp3`, `.wav` | Speech transcription (optional extra) |
+| **YouTube** | URL | Fetches video transcription (optional extra) |
 
-For the latest list and limitations, see the [MarkItDown documentation](https://github.com/microsoft/markitdown).
+### Not included (requires Azure or pre-release deps)
+
+| Feature | Why |
+|---------|-----|
+| Azure Document Intelligence | Needs `markitdown[az-doc-intel]` + Azure endpoint |
+| Azure Content Understanding | Pre-release package; breaks `uvx` resolution |
+| `markitdown[all]` | Bundles the Azure extras above |
+
+For the latest upstream behavior, see the [MarkItDown documentation](https://github.com/microsoft/markitdown).
 
 ---
 
 ## Quick install
 
-**Requirement:** [uv](https://docs.astral.sh/uv/getting-started/installation/) (`uvx` is included) for one-click installs. See [manual setup](#configuration) if buttons do not work.
+**Requirement:** [uv](https://docs.astral.sh/uv/getting-started/installation/) (`uvx` included). See [manual setup](#configuration) if buttons do not work.
 
 ### Cursor
 
 **Option 1 — Install link (try this first)**
 
-1. [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bcGRmLGRvY3gscHB0eCx4bHN4LHhscyxvdXRsb29rXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D) — open this link (not the badge image alone)
-2. If Cursor does not open, copy the [deeplink](#cursor-deeplink-fallback) below into your **browser address bar** and press Enter
-3. Click **Install** when Cursor prompts you
-4. Open **Cursor Settings → MCP** and confirm `document-converter` appears (green / enabled)
-5. **Reload MCP** or restart Cursor if tools do not show up
+1. [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bcGRmLGRvY3gscHB0eCx4bHN4LHhscyxvdXRsb29rLGF1ZGlvLXRyYW5zY3JpcHRpb24seW91dHViZS10cmFuc2NyaXB0aW9uXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D) — open this link (not the badge image alone)
+2. If Cursor does not open, copy the [deeplink](#cursor-deeplink-fallback) into your **browser address bar**
+3. Click **Install** when prompted
+4. Open **Cursor Settings → MCP** and confirm `document-converter` is enabled
+5. **Reload MCP** or restart Cursor if tools do not appear
 
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bcGRmLGRvY3gscHB0eCx4bHN4LHhscyxvdXRsb29rXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D)
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-light.svg)](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bcGRmLGRvY3gscHB0eCx4bHN4LHhscyxvdXRsb29rXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D)
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bcGRmLGRvY3gscHB0eCx4bHN4LHhscyxvdXRsb29rLGF1ZGlvLXRyYW5zY3JpcHRpb24seW91dHViZS10cmFuc2NyaXB0aW9uXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D)
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-light.svg)](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bcGRmLGRvY3gscHB0eCx4bHN4LHhscyxvdXRsb29rLGF1ZGlvLXRyYW5zY3JpcHRpb24seW91dHViZS10cmFuc2NyaXB0aW9uXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D)
 
 <a id="cursor-deeplink-fallback"></a>
 
 **Option 2 — Deeplink fallback** (Windows: paste into Chrome/Edge address bar):
 
 ```
-cursor://anysphere.cursor-deeplink/mcp/install?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bcGRmLGRvY3gscHB0eCx4bHN4LHhscyxvdXRsb29rXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D
+cursor://anysphere.cursor-deeplink/mcp/install?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bcGRmLGRvY3gscHB0eCx4bHN4LHhscyxvdXRsb29rLGF1ZGlvLXRyYW5zY3JpcHRpb24seW91dHViZS10cmFuc2NyaXB0aW9uXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D
 ```
 
 **Option 3 — Manual (always works)**
 
 1. Open **Cursor → Settings → MCP → Add new MCP server**
-2. Paste this into your user or project `mcp.json`:
+2. Paste into user or project `mcp.json`:
 
 ```json
 {
@@ -127,7 +150,7 @@ cursor://anysphere.cursor-deeplink/mcp/install?name=document-converter&config=ey
         "--from",
         "git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter",
         "--with",
-        "markitdown[pdf,docx,pptx,xlsx,xls,outlook]",
+        "markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription]",
         "document-converter-mcp"
       ]
     }
@@ -135,18 +158,18 @@ cursor://anysphere.cursor-deeplink/mcp/install?name=document-converter&config=ey
 }
 ```
 
-**Button does nothing?** On Windows, GitHub badge clicks often open the image URL without launching Cursor. Use the [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bcGRmLGRvY3gscHB0eCx4bHN4LHhscyxvdXRsb29rXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D) text link, the deeplink above, or manual JSON instead.
+**Button does nothing?** On Windows, badge clicks often open the image URL without launching Cursor. Use the [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bcGRmLGRvY3gscHB0eCx4bHN4LHhscyxvdXRsb29rLGF1ZGlvLXRyYW5zY3JpcHRpb24seW91dHViZS10cmFuc2NyaXB0aW9uXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D) text link, the deeplink, or manual JSON.
 
 ### VS Code
 
 Requires the [MCP extension](https://marketplace.visualstudio.com/items?itemName=modelcontextprotocol.mcp).
 
-[**Install in VS Code**](vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22git%2Bhttps%3A//github.com/Zahid-Abbas-Ali-Baig/document-converter%22%2C%22--with%22%2C%22markitdown%5Bpdf%2Cdocx%2Cpptx%2Cxlsx%2Cxls%2Coutlook%5D%22%2C%22document-converter-mcp%22%5D%7D)
+[**Install in VS Code**](vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22git%2Bhttps%3A//github.com/Zahid-Abbas-Ali-Baig/document-converter%22%2C%22--with%22%2C%22markitdown%5Bpdf%2Cdocx%2Cpptx%2Cxlsx%2Cxls%2Coutlook%2Caudio-transcription%2Cyoutube-transcription%5D%22%2C%22document-converter-mcp%22%5D%7D)
 
-Or use **Command Palette** → **MCP: Install Server** and paste:
+Or **Command Palette** → **MCP: Install Server** → paste:
 
 ```
-vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22git%2Bhttps%3A//github.com/Zahid-Abbas-Ali-Baig/document-converter%22%2C%22--with%22%2C%22markitdown%5Bpdf%2Cdocx%2Cpptx%2Cxlsx%2Cxls%2Coutlook%5D%22%2C%22document-converter-mcp%22%5D%7D
+vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22git%2Bhttps%3A//github.com/Zahid-Abbas-Ali-Baig/document-converter%22%2C%22--with%22%2C%22markitdown%5Bpdf%2Cdocx%2Cpptx%2Cxlsx%2Cxls%2Coutlook%2Caudio-transcription%2Cyoutube-transcription%5D%22%2C%22document-converter-mcp%22%5D%7D
 ```
 
 ---
@@ -155,22 +178,133 @@ vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22
 
 | Tool | Description | Writes to disk |
 |------|-------------|----------------|
-| `convert_to_markdown` | Converts a document to Markdown and saves `{filename}.md` beside the source file | Yes |
-| `preview_markdown` | Returns Markdown content in the response only | No |
+| `convert_to_markdown` | Converts a file to Markdown and saves `{name}.md` beside the source | Yes |
+| `preview_markdown` | Returns Markdown in the chat response only | No |
 
-### Example prompts
+**Input:** absolute or relative path to a file on your machine (or a supported URL for YouTube).
+
+**Output:** Markdown text suitable for summarization, diffing, or committing to Git.
+
+---
+
+## Usage examples
+
+Natural-language prompts you can paste into Cursor, VS Code, or Claude Desktop after the MCP server is connected.
+
+### Convert a PDF and summarize
+
+**Prompt:**
 
 ```
-Convert C:\Reports\Q1-summary.pdf to markdown.
+Use document-converter to convert C:\Reports\annual-report.pdf to markdown,
+then give me a 5-bullet executive summary.
 ```
 
-```
-Preview markdown for ./specs/api-design.docx without saving.
-```
+**What happens:** The agent calls `convert_to_markdown`, creates `annual-report.md` next to the PDF, and summarizes the result.
+
+---
+
+### Preview a Word doc before saving
+
+**Prompt:**
 
 ```
-Convert this Excel file and tell me the top 5 rows: D:\data\sales.xlsx
+Preview markdown for ./contracts/vendor-agreement.docx without saving.
+Tell me if there is a termination clause.
 ```
+
+**What happens:** The agent calls `preview_markdown`, reads the content in chat, and answers your question — no file is written.
+
+---
+
+### Excel to analysis
+
+**Prompt:**
+
+```
+Convert D:\data\sales-q1.xlsx to markdown and list the top 3 products by revenue.
+```
+
+**What happens:** Spreadsheet tables become Markdown the model can parse and rank.
+
+---
+
+### PowerPoint for release notes
+
+**Prompt:**
+
+```
+Preview ./slides/product-launch.pptx as markdown and draft release notes
+from the slide titles and bullet points.
+```
+
+---
+
+### Outlook email extraction
+
+**Prompt:**
+
+```
+Convert C:\Mail\customer-escalation.msg to markdown and extract action items.
+```
+
+---
+
+### Batch-style workflow (multiple files)
+
+**Prompt:**
+
+```
+Convert these to markdown and save beside each file:
+- C:\Docs\spec-v2.pdf
+- C:\Docs\api-reference.docx
+- C:\Docs\metrics.xlsx
+Then confirm the .md paths.
+```
+
+---
+
+### Audio transcription
+
+**Prompt:**
+
+```
+Preview markdown for ./recordings/standup-notes.mp3 and list decisions made.
+```
+
+*Requires the `audio-transcription` extra (included in this project's dependencies).*
+
+---
+
+### YouTube URL
+
+**Prompt:**
+
+```
+Use preview_markdown on https://www.youtube.com/watch?v=EXAMPLE and summarize the main points.
+```
+
+*Pass the URL as `file_path`. Requires the `youtube-transcription` extra.*
+
+---
+
+### Example Markdown output (PDF)
+
+*Illustrative snippet after conversion:*
+
+```markdown
+# Quarterly Results
+
+Revenue increased 12% year over year driven by enterprise subscriptions.
+
+## Highlights
+
+- Net retention: 118%
+- New logos: 240
+- Gross margin: 74%
+```
+
+Quality depends on the source document layout and MarkItDown version.
 
 ---
 
@@ -198,7 +332,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Run the server directly:
+Run the server directly (stdio — used by MCP clients):
 
 ```bash
 python server.py
@@ -210,7 +344,7 @@ python server.py
 
 ### Option A — `uvx` (recommended)
 
-Works on Windows, macOS, and Linux without cloning:
+No clone required; works on Windows, macOS, and Linux:
 
 ```json
 {
@@ -221,7 +355,7 @@ Works on Windows, macOS, and Linux without cloning:
         "--from",
         "git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter",
         "--with",
-        "markitdown[pdf,docx,pptx,xlsx,xls,outlook]",
+        "markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription]",
         "document-converter-mcp"
       ]
     }
@@ -259,8 +393,8 @@ Replace `REPO_PATH` with the absolute path to your clone.
 }
 ```
 
-| Client | Config file location |
-|--------|----------------------|
+| Client | Config location |
+|--------|-----------------|
 | Cursor | `.cursor/mcp.json` (project) or user MCP settings |
 | VS Code | MCP extension settings / `mcp.json` |
 | Claude Desktop | `claude_desktop_config.json` |
@@ -269,40 +403,43 @@ Replace `REPO_PATH` with the absolute path to your clone.
 
 ## MCP Registry
 
-This server is listed on the [official MCP Registry](https://registry.modelcontextprotocol.io) as:
+Listed on the [official MCP Registry](https://registry.modelcontextprotocol.io) as:
 
 **`io.github.Zahid-Abbas-Ali-Baig/document-converter`**
 
 - [Search registry](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.Zahid-Abbas-Ali-Baig/document-converter)
-- [GitHub Release v1.0.0](https://github.com/Zahid-Abbas-Ali-Baig/document-converter/releases/tag/v1.0.0) (includes `.mcpb` bundle)
-
-Clients with registry integration can install without manual JSON editing.
+- [GitHub Release v1.0.0](https://github.com/Zahid-Abbas-Ali-Baig/document-converter/releases/tag/v1.0.0) (`.mcpb` bundle)
 
 ---
 
 ## Troubleshooting
 
-### `Failed to acquire MessagePort` / `createMcpProcessChannelConnectionResult`
+### Dependency resolution / `markitdown[all]` errors
 
-This log line comes from **Cursor or VS Code**, not from document-converter itself:
+If you see errors about `azure-ai-contentunderstanding` or pre-releases, remove `markitdown[all]` from your config. Use:
 
 ```
-[MCPService] Error creating client: Failed to acquire MessagePort for response channel 'vscode:createMcpProcessChannelConnectionResult'
+markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription]
 ```
 
-It means the editor could not start its internal MCP host process. Common causes and fixes:
+### `Failed to acquire MessagePort`
+
+This comes from **Cursor or VS Code**, not this server:
+
+```
+[MCPService] Error creating client: Failed to acquire MessagePort ...
+```
 
 | Step | Action |
 |------|--------|
-| 1 | **Fully quit** Cursor/VS Code (all windows), then reopen |
-| 2 | Install **[uv](https://docs.astral.sh/uv/)** — required for `uvx` one-click installs |
-| 3 | In a terminal, test: `uvx --from git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter --with markitdown[pdf,docx,pptx,xlsx,xls,outlook] document-converter-mcp` (it may sit idle; that is normal for stdio servers) |
-| 4 | Use **manual JSON** (clone repo + Python path) instead of the install link — see [Option B](#option-b--local-clone) |
-| 5 | **Cursor Settings → MCP** → remove `document-converter`, re-add manually, click refresh |
-| 6 | Update Cursor/VS Code to the **latest version** |
-| 7 | On macOS 26+, if MCP is broken globally, try Cursor’s `legacyMcpMode` workaround ([forum thread](https://forum.cursor.com/t/macos-26-mcpprocess-ipc-crash-loop-on-startup-agent-execution-fails-until-legacymcpmode-workaround-applied/160598)) |
+| 1 | **Fully quit** the editor, then reopen |
+| 2 | Install **[uv](https://docs.astral.sh/uv/)** for `uvx` installs |
+| 3 | Test: `uvx --from git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter --with markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription] document-converter-mcp` (idle = normal for stdio) |
+| 4 | Use [Option B — local clone](#option-b--local-clone) if `uvx` fails |
+| 5 | **Settings → MCP** → remove and re-add the server |
+| 6 | Update Cursor/VS Code to the latest version |
 
-**Recommended fix for colleagues (most reliable):**
+**Reliable colleague setup (clone + venv):**
 
 ```bash
 git clone https://github.com/Zahid-Abbas-Ali-Baig/document-converter.git
@@ -311,8 +448,6 @@ python -m venv .venv
 .venv\Scripts\activate          # Windows
 pip install -r requirements.txt
 ```
-
-Then in **Cursor → Settings → MCP**, add:
 
 ```json
 {
@@ -325,15 +460,13 @@ Then in **Cursor → Settings → MCP**, add:
 }
 ```
 
-Replace paths with the real clone location. This avoids `uvx` and install deeplinks entirely.
-
 ### Install button does nothing (Windows)
 
-Use the [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bcGRmLGRvY3gscHB0eCx4bHN4LHhscyxvdXRsb29rXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D) text link, paste the [deeplink](#cursor-deeplink-fallback) in your browser, or use manual JSON above.
+Use [**Add to Cursor**](https://cursor.com/en/install-mcp?name=document-converter&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXQraHR0cHM6Ly9naXRodWIuY29tL1phaGlkLUFiYmFzLUFsaS1CYWlnL2RvY3VtZW50LWNvbnZlcnRlciIsIi0td2l0aCIsIm1hcmtpdGRvd25bcGRmLGRvY3gscHB0eCx4bHN4LHhscyxvdXRsb29rLGF1ZGlvLXRyYW5zY3JpcHRpb24seW91dHViZS10cmFuc2NyaXB0aW9uXSIsImRvY3VtZW50LWNvbnZlcnRlci1tY3AiXX0%3D), the [deeplink](#cursor-deeplink-fallback), or manual JSON.
 
-### Tools not visible after install
+### Tools not visible
 
-Reload MCP in settings or restart the editor. Confirm the server shows as **enabled** (not red/disabled).
+Reload MCP or restart the editor. Confirm the server is **enabled** (not red/disabled).
 
 ---
 

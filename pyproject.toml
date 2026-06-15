@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "mcp>=1.27.0",
-    "markitdown[pdf,docx,pptx,xlsx,xls,outlook]>=0.1.6",
+    "markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription]>=0.1.6",
 ]
 
 [project.scripts]
