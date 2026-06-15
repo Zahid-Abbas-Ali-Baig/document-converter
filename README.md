@@ -289,43 +289,17 @@ Requires **VS Code 1.102+** with [built-in MCP support](https://code.visualstudi
 
    > On Windows Store Claude, `%APPDATA%\Claude\` may not exist — use the `Packages\Claude_*\...` path above.
 
-2. Add inside `mcpServers` (merge with existing `preferences` — keep both keys at the root):
-
-```json
-{
-  "mcpServers": {
-    "document-converter": {
-      "command": "C:\\Users\\YOUR_USER\\.local\\bin\\uvx.exe",
-      "args": [
-        "--from",
-        "git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter",
-        "--with",
-        "markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription]",
-        "document-converter-mcp"
-      ],
-      "env": {
-        "PATH": "C:\\Program Files\\Git\\cmd;C:\\Program Files\\Git\\mingw64\\bin;C:\\Users\\YOUR_USER\\.local\\bin;C:\\Users\\YOUR_USER\\AppData\\Local\\Programs\\Python\\Python312\\Scripts"
-      }
-    }
-  }
-}
-```
-
-   **Windows:** replace `YOUR_USER` and use the full path from `where uvx`. The `env.PATH` block is required so `uvx` can find **Git** when cloning from GitHub (Claude Desktop often does not inherit your full shell PATH).
-
-3. **Pre-warm (recommended):** run once in PowerShell, then restart Claude:
+2. **Recommended on Windows (Microsoft Store)** — local clone + Python (no Git, no `uvx` at runtime):
 
    ```bash
-   uvx --from git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter --with markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription] document-converter-mcp
+   git clone https://github.com/Zahid-Abbas-Ali-Baig/document-converter.git
+   cd document-converter
+   python -m venv .venv
+   .venv\Scripts\activate
+   pip install -r requirements.txt
    ```
 
-   Press `Ctrl+C` when idle. This caches the package so Claude starts faster.
-
-4. **Restart Claude Desktop** completely (quit from tray, reopen).
-
-#### Claude fallback — local clone (no Git at runtime)
-
-If you still see `Git executable not found`, clone the repo and use Python directly:
+   Add inside `mcpServers` (keep existing `preferences` at the root):
 
 ```json
 {
@@ -338,7 +312,26 @@ If you still see `Git executable not found`, clone the repo and use Python direc
 }
 ```
 
-See [Local development 🧪](#local-development-).
+3. **Alternative — `uvx` (macOS / classic Windows only)** — often **fails** on Microsoft Store Claude with `Git executable not found`:
+
+```json
+{
+  "mcpServers": {
+    "document-converter": {
+      "command": "C:\\Users\\YOUR_USER\\.local\\bin\\uvx.exe",
+      "args": [
+        "--from",
+        "git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter",
+        "--with",
+        "markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription]",
+        "document-converter-mcp"
+      ]
+    }
+  }
+}
+```
+
+4. **Restart Claude Desktop** completely (quit from tray, reopen).
 
 ---
 
@@ -631,16 +624,11 @@ VS Code's install link wrote the **URL as the command** instead of `uvx`. Fix:
 
 ### Claude Desktop: `Git executable not found`
 
-`uvx --from git+...` needs **Git** to download the package. Claude Desktop on Windows often spawns MCP with a **limited PATH**, so `git` is missing even if it works in your terminal.
+`uvx --from git+...` needs **Git** to download the package. **Microsoft Store Claude on Windows** often cannot run `uv` + Git correctly — even when Git is on PATH in the log.
 
-**Fix:**
+**Fix (recommended):** use **local Python** instead of `uvx` — see [Install in Claude Desktop 🤖](#install-in-claude-desktop) (step 2). No Git needed at runtime.
 
-1. Install [Git for Windows](https://git-scm.com/download/win) if not already installed.
-2. In `claude_desktop_config.json`, use the **full path** to `uvx.exe` and add `env.PATH` with Git (see [Install in Claude Desktop 🤖](#install-in-claude-desktop)).
-3. Pre-warm in PowerShell: `uvx --from git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter --with markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription] document-converter-mcp` → `Ctrl+C`.
-4. **Fully quit** Claude (tray icon) and reopen.
-
-**Still failing?** Use the [local clone fallback](#install-in-claude-desktop) (Python + `server.py` — no Git at runtime).
+**If you must use `uvx`:** install [Git for Windows](https://git-scm.com/download/win), pre-warm in PowerShell (`uvx --from git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter --with markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription] document-converter-mcp`), use classic Claude (not Store), or try classic Windows `%APPDATA%\Claude\` install.
 
 ### `Failed to acquire MessagePort`
 
