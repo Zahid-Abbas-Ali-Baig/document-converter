@@ -6,6 +6,10 @@ import urllib.parse
 
 REPO = "https://github.com/Zahid-Abbas-Ali-Baig/document-converter"
 REGISTRY = "io.github.Zahid-Abbas-Ali-Baig/document-converter"
+REGISTRY_URL = (
+    "https://registry.modelcontextprotocol.io/v0.1/servers/"
+    "io.github.Zahid-Abbas-Ali-Baig%2Fdocument-converter/versions/1.0.0"
+)
 NAME = "document-converter"
 AUTHOR = "Zahid Abbas Ali Baig"
 
@@ -57,7 +61,7 @@ README = f"""# 📄 Document Converter MCP
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python 3.10+"></a>
-  <a href="https://registry.modelcontextprotocol.io/v0/servers?search={urllib.parse.quote(REGISTRY)}"><img src="https://img.shields.io/badge/MCP-Registry-green.svg" alt="MCP Registry"></a>
+  <a href="{REGISTRY_URL}"><img src="https://img.shields.io/badge/MCP-Registry-green.svg" alt="MCP Registry"></a>
 </p>
 
 Give your AI assistant the ability to **read PDFs, Office files, spreadsheets, emails, audio, and more** as clean Markdown — so it can summarize, search, and reason over content instead of struggling with binary attachments.
@@ -99,7 +103,7 @@ flowchart LR
 
 | | |
 |---|---|
-| **Registry name** | `{REGISTRY}` |
+| **Registry** | [`{REGISTRY}`]({REGISTRY_URL}) |
 | **Repository** | [{REPO}]({REPO}) |
 | **Transport** | stdio |
 | **Author** | {AUTHOR} |
@@ -128,7 +132,7 @@ Once connected, your agent converts files locally and returns structured text �
 - 📎 **Broad format coverage** — PDF, Office, CSV/JSON/text, Outlook `.msg`, audio, YouTube, and more (via MarkItDown)
 - 🔀 **Two workflows** — save Markdown next to the source, or preview in chat only
 - 📋 **Copy-paste setup** — step-by-step install for Cursor, VS Code, and Claude Desktop
-- 📦 **Registry published** — listed on the [official MCP Registry](https://registry.modelcontextprotocol.io)
+- 📦 **Registry published** — listed on the [official MCP Registry]({REGISTRY_URL})
 - ⚖️ **MIT licensed** — free for personal and commercial use
 
 ---
@@ -624,14 +628,9 @@ Clone and install — see [Local development 🧪](#local-development-). Then po
 
 ## MCP Registry 📦
 
-Listed on the [official MCP Registry](https://registry.modelcontextprotocol.io) as:
+Listed on the [official MCP Registry]({REGISTRY_URL}) as **`{REGISTRY}`** (v1.0.0).
 
-**`{REGISTRY}`**
-
-> This is a **registry identifier**, not a browser URL. Do not open `http://{REGISTRY}` — it will not load. Use the links below instead.
-
-- 🌐 [Browse MCP Registry](https://registry.modelcontextprotocol.io)
-- 🔍 [Search this server](https://registry.modelcontextprotocol.io/v0/servers?search={urllib.parse.quote(REGISTRY)})
+- 🔍 [Registry entry (v1.0.0)]({REGISTRY_URL})
 - 📂 [GitHub repository]({REPO})
 - 📥 [GitHub Release v1.0.0]({REPO}/releases/tag/v1.0.0) (`.mcpb` bundle)
 
