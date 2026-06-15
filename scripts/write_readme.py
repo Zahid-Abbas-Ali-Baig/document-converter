@@ -211,14 +211,19 @@ For the latest upstream behavior, see the [MarkItDown documentation](https://git
 
 ### VS Code
 
-Requires **VS Code 1.102 or newer** — MCP is [built into VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers). There is **no separate MCP extension** to install.
+Requires **VS Code 1.102 or newer** — MCP is [built into VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
 
-**Do not paste the `vscode://mcp/install?...` link as the server command.** That URL is only for one-click install in a browser. VS Code needs a real executable (`uvx`) in `mcp.json`.
+> **The `vscode://mcp/install?...` link is broken in many VS Code builds** — it writes the URL as the `command` and fails with `spawn vscode://mcp/install?... ENOENT`. **Do not use it.** Use the config below instead.
 
-#### Option 1 — Manual config (recommended on Windows)
+#### Option 1 — Workspace config (easiest if you cloned this repo)
 
-1. **Command Palette** (`Ctrl+Shift+P`) → **MCP: Open User Configuration**
-2. Replace or add this (use your full `uvx` path if `uvx` is not on PATH — run `where uvx` in a terminal):
+This repo includes [`.vscode/mcp.json`](.vscode/mcp.json) with the correct server. Open the folder in VS Code, then **MCP: List Servers** → start **document-converter**.
+
+#### Option 2 — User config (manual)
+
+1. **Delete** any broken auto-generated servers (names like `my-mcp-server-*` whose `command` starts with `vscode://`)
+2. **Command Palette** (`Ctrl+Shift+P`) → **MCP: Open User Configuration**
+3. Paste:
 
 ```json
 {{
@@ -238,25 +243,17 @@ Requires **VS Code 1.102 or newer** — MCP is [built into VS Code](https://code
 }}
 ```
 
-3. **MCP: List Servers** → start **document-converter** (or restart VS Code)
+4. **MCP: List Servers** → start **document-converter**
 
-**Windows example** if `uvx` is not found (`ENOENT`):
+**Windows:** if `uvx` is not found, use the full path from `where uvx`:
 
 ```json
 "command": "C:\\\\Users\\\\YOUR_USER\\\\.local\\\\bin\\\\uvx.exe"
 ```
 
-#### Option 2 — Add Server wizard
+#### Option 3 — Add Server wizard
 
-**Command Palette** → **MCP: Add Server** → **stdio** → command `uvx` → add each arg on a separate line (do not paste the `vscode://` link).
-
-#### Option 3 — Install link
-
-Open this in your **browser** (not in the command field):
-
-```
-{vscode_link}
-```
+**MCP: Add Server** → **stdio** → command `uvx` → add each arg separately (never paste a `vscode://` link).
 
 Docs: [Add and manage MCP servers](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
 
@@ -520,12 +517,14 @@ If you see errors about `azure-ai-contentunderstanding` or pre-releases, remove 
 
 ### VS Code: `spawn vscode://mcp/install?... ENOENT`
 
-VS Code tried to run the **install link** as the server command. Fix:
+VS Code's install link wrote the **URL as the command** instead of `uvx`. Fix:
 
-1. **MCP: Open User Configuration**
-2. Remove any server whose `command` starts with `vscode://`
-3. Use the `servers` + `uvx` JSON from [VS Code install](#vs-code) above
-4. **MCP: List Servers** → restart the server
+1. **MCP: Open User Configuration** (or `.vscode/mcp.json` in this repo)
+2. **Delete** entries like `my-mcp-server-*` where `"command"` starts with `vscode://`
+3. Use [`.vscode/mcp.json`](.vscode/mcp.json) from this repo, or paste the `servers` + `uvx` JSON from [VS Code install](#vs-code)
+4. **MCP: List Servers** → restart **document-converter**
+
+**Do not use the README `vscode://mcp/install?...` link** — it is unreliable in VS Code.
 
 ### `Failed to acquire MessagePort`
 
@@ -585,3 +584,20 @@ Copyright (c) 2026 {AUTHOR}
 path = pathlib.Path(__file__).resolve().parents[1] / "README.md"
 path.write_bytes(README.encode("utf-8"))
 print(f"wrote {path} ({path.stat().st_size} bytes)")
+
+VSCODE_MCP = {
+    "servers": {
+        NAME: {
+            "type": "stdio",
+            "command": "uvx",
+            "args": MCP_CONFIG["args"],
+        }
+    }
+}
+vscode_dir = pathlib.Path(__file__).resolve().parents[1] / ".vscode"
+vscode_dir.mkdir(exist_ok=True)
+vscode_mcp = vscode_dir / "mcp.json"
+vscode_mcp.write_bytes(
+    (json.dumps(VSCODE_MCP, indent=2) + "\n").encode("utf-8")
+)
+print(f"wrote {vscode_mcp}")

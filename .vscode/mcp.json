@@ -1,0 +1,15 @@
+{
+  "servers": {
+    "document-converter": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/Zahid-Abbas-Ali-Baig/document-converter",
+        "--with",
+        "markitdown[pdf,docx,pptx,xlsx,xls,outlook,audio-transcription,youtube-transcription]",
+        "document-converter-mcp"
+      ]
+    }
+  }
+}
