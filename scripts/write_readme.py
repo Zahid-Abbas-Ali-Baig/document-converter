@@ -332,28 +332,62 @@ Requires **VS Code 1.102+** with [built-in MCP support](https://code.visualstudi
 ### Install in Claude Desktop 🤖
 
 1. Open Claude Desktop config:
-   - **Windows:** `%APPDATA%\\Claude\\claude_desktop_config.json`
+   - **Windows (Microsoft Store):** `%LOCALAPPDATA%\\Packages\\Claude_<id>\\LocalCache\\Roaming\\Claude\\claude_desktop_config.json`
+   - **Windows (classic):** `%APPDATA%\\Claude\\claude_desktop_config.json`
    - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-2. Add inside `mcpServers`:
+
+   > On Windows Store Claude, `%APPDATA%\\Claude\\` may not exist — use the `Packages\\Claude_*\\...` path above.
+
+2. Add inside `mcpServers` (merge with existing `preferences` — keep both keys at the root):
 
 ```json
 {{
   "mcpServers": {{
     "document-converter": {{
-      "command": "uvx",
+      "command": "C:\\\\Users\\\\YOUR_USER\\\\.local\\\\bin\\\\uvx.exe",
       "args": [
         "--from",
         "git+{REPO}",
         "--with",
         "{MARKITDOWN_EXTRAS}",
         "document-converter-mcp"
-      ]
+      ],
+      "env": {{
+        "PATH": "C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\Program Files\\\\Git\\\\mingw64\\\\bin;C:\\\\Users\\\\YOUR_USER\\\\.local\\\\bin;C:\\\\Users\\\\YOUR_USER\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\Scripts"
+      }}
     }}
   }}
 }}
 ```
 
-3. **Restart Claude Desktop**.
+   **Windows:** replace `YOUR_USER` and use the full path from `where uvx`. The `env.PATH` block is required so `uvx` can find **Git** when cloning from GitHub (Claude Desktop often does not inherit your full shell PATH).
+
+3. **Pre-warm (recommended):** run once in PowerShell, then restart Claude:
+
+   ```bash
+   uvx --from git+{REPO} --with {MARKITDOWN_EXTRAS} document-converter-mcp
+   ```
+
+   Press `Ctrl+C` when idle. This caches the package so Claude starts faster.
+
+4. **Restart Claude Desktop** completely (quit from tray, reopen).
+
+#### Claude fallback — local clone (no Git at runtime)
+
+If you still see `Git executable not found`, clone the repo and use Python directly:
+
+```json
+{{
+  "mcpServers": {{
+    "document-converter": {{
+      "command": "C:\\\\path\\\\to\\\\document-converter\\\\.venv\\\\Scripts\\\\python.exe",
+      "args": ["C:\\\\path\\\\to\\\\document-converter\\\\server.py"]
+    }}
+  }}
+}}
+```
+
+See [Local development 🧪](#local-development-).
 
 ---
 
@@ -643,6 +677,19 @@ VS Code's install link wrote the **URL as the command** instead of `uvx`. Fix:
 4. **MCP: List Servers** → restart **document-converter**
 
 **Do not use the README `vscode://mcp/install?...` link** — it is unreliable in VS Code.
+
+### Claude Desktop: `Git executable not found`
+
+`uvx --from git+...` needs **Git** to download the package. Claude Desktop on Windows often spawns MCP with a **limited PATH**, so `git` is missing even if it works in your terminal.
+
+**Fix:**
+
+1. Install [Git for Windows](https://git-scm.com/download/win) if not already installed.
+2. In `claude_desktop_config.json`, use the **full path** to `uvx.exe` and add `env.PATH` with Git (see [Install in Claude Desktop 🤖](#install-in-claude-desktop)).
+3. Pre-warm in PowerShell: `uvx --from git+{REPO} --with {MARKITDOWN_EXTRAS} document-converter-mcp` → `Ctrl+C`.
+4. **Fully quit** Claude (tray icon) and reopen.
+
+**Still failing?** Use the [local clone fallback](#install-in-claude-desktop) (Python + `server.py` — no Git at runtime).
 
 ### `Failed to acquire MessagePort`
 
