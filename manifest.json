@@ -1,0 +1,19 @@
+{
+  "manifest_version": "0.4",
+  "name": "@Zahid-Abbas-Ali-Baig/document-converter",
+  "version": "1.0.0",
+  "description": "Convert documents to Markdown using MarkItDown",
+  "server": {
+    "type": "python",
+    "entry_point": "server",
+    "mcp_config": {
+      "command": "python",
+      "args": ["${__dirname}/server.py"]
+    }
+  },
+  "_meta": {
+    "dev.mpak/registry": {
+      "name": "io.github.Zahid-Abbas-Ali-Baig/document-converter"
+    }
+  }
+}
