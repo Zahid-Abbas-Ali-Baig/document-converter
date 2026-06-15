@@ -47,7 +47,7 @@ vscode_payload = json.dumps(
 )
 vscode_link = "vscode://mcp/install?" + urllib.parse.quote(vscode_payload)
 
-README = f"""# Document Converter MCP
+README = f"""# 📄 Document Converter MCP
 
 <p align="center">
   <strong>Convert documents to Markdown inside Cursor, VS Code, and any MCP client.</strong><br>
@@ -66,22 +66,27 @@ Give your AI assistant the ability to **read PDFs, Office files, spreadsheets, e
 
 ## Table of contents
 
-- [Overview](#overview)
-- [Use cases](#use-cases)
-- [Features](#features)
-- [Supported formats](#supported-formats)
-- [Quick install](#quick-install)
-- [Tools](#tools)
-- [Usage examples](#usage-examples)
-- [Configuration reference](#configuration-reference)
-- [Local development](#local-development)
-- [MCP Registry](#mcp-registry)
-- [Troubleshooting](#troubleshooting)
-- [License](#license)
+- [Overview 📋](#overview-)
+- [Use cases 💡](#use-cases-)
+- [Features ✨](#features-)
+- [Supported formats 📎](#supported-formats-)
+- [Quick install 🚀](#quick-install-)
+  - [Before you start](#before-you-start-all-editors)
+  - [Cursor 🖱️](#install-in-cursor)
+  - [VS Code 💻](#install-in-vs-code)
+  - [Claude Desktop 🤖](#install-in-claude-desktop)
+  - [Verify it works ✅](#verify-it-works)
+- [Tools 🛠️](#tools-)
+- [Usage examples 💬](#usage-examples-)
+- [Local development 🧪](#local-development-)
+- [Configuration reference ⚙️](#configuration-reference-)
+- [MCP Registry 📦](#mcp-registry-)
+- [Troubleshooting 🔧](#troubleshooting-)
+- [License 📜](#license-)
 
 ---
 
-## Overview
+## Overview 📋
 
 **Document Converter MCP** is a lightweight stdio server that wraps Microsoft's [MarkItDown](https://github.com/microsoft/markitdown) library for the [Model Context Protocol](https://modelcontextprotocol.io).
 
@@ -104,7 +109,7 @@ Once connected, your agent converts files locally and returns structured text �
 
 ---
 
-## Use cases
+## Use cases 💡
 
 | Scenario | What you gain |
 |----------|----------------|
@@ -117,18 +122,18 @@ Once connected, your agent converts files locally and returns structured text �
 
 ---
 
-## Features
+## Features ✨
 
-- **Local-first** — files stay on your machine; no third-party conversion service
-- **Broad format coverage** — PDF, Office, CSV/JSON/text, Outlook `.msg`, audio, YouTube, and more (via MarkItDown)
-- **Two workflows** — save Markdown next to the source, or preview in chat only
-- **Copy-paste setup** — step-by-step install for Cursor, VS Code, and Claude Desktop
-- **Registry published** — listed on the [official MCP Registry](https://registry.modelcontextprotocol.io)
-- **MIT licensed** — free for personal and commercial use
+- 🏠 **Local-first** — files stay on your machine; no third-party conversion service
+- 📎 **Broad format coverage** — PDF, Office, CSV/JSON/text, Outlook `.msg`, audio, YouTube, and more (via MarkItDown)
+- 🔀 **Two workflows** — save Markdown next to the source, or preview in chat only
+- 📋 **Copy-paste setup** — step-by-step install for Cursor, VS Code, and Claude Desktop
+- 📦 **Registry published** — listed on the [official MCP Registry](https://registry.modelcontextprotocol.io)
+- ⚖️ **MIT licensed** — free for personal and commercial use
 
 ---
 
-## Supported formats
+## Supported formats 📎
 
 Formats below are verified against [MarkItDown](https://github.com/microsoft/markitdown) **0.1.6** with our installed extras:
 
@@ -178,7 +183,7 @@ Conversion quality depends on the source file. See the [MarkItDown documentation
 
 ---
 
-## Quick install
+## Quick install 🚀
 
 Follow the steps for your editor. Every config below uses the same command — only the JSON file and wrapper key differ.
 
@@ -212,7 +217,9 @@ Follow the steps for your editor. Every config below uses the same command — o
 
 ---
 
-### Install in Cursor
+<a id="install-in-cursor"></a>
+
+### Install in Cursor 🖱️
 
 1. Open **Cursor → Settings → MCP** (or edit your config file directly).
 2. **Config file location:**
@@ -258,7 +265,9 @@ Follow the steps for your editor. Every config below uses the same command — o
 
 ---
 
-### Install in VS Code
+<a id="install-in-vs-code"></a>
+
+### Install in VS Code 💻
 
 Requires **VS Code 1.102+** with [built-in MCP support](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
 
@@ -318,7 +327,9 @@ Requires **VS Code 1.102+** with [built-in MCP support](https://code.visualstudi
 
 ---
 
-### Install in Claude Desktop
+<a id="install-in-claude-desktop"></a>
+
+### Install in Claude Desktop 🤖
 
 1. Open Claude Desktop config:
    - **Windows:** `%APPDATA%\\Claude\\claude_desktop_config.json`
@@ -346,7 +357,9 @@ Requires **VS Code 1.102+** with [built-in MCP support](https://code.visualstudi
 
 ---
 
-### Verify it works
+<a id="verify-it-works"></a>
+
+### Verify it works ✅
 
 Ask your AI assistant:
 
@@ -364,7 +377,7 @@ You should see `convert_to_markdown` and `preview_markdown` being called.
 
 ---
 
-## Tools
+## Tools 🛠️
 
 | Tool | Description | Writes to disk |
 |------|-------------|----------------|
@@ -377,7 +390,7 @@ You should see `convert_to_markdown` and `preview_markdown` being called.
 
 ---
 
-## Usage examples
+## Usage examples 💬
 
 Natural-language prompts you can paste into Cursor, VS Code, or Claude Desktop after the MCP server is connected.
 
@@ -506,7 +519,7 @@ Quality depends on the source document layout and MarkItDown version.
 
 ---
 
-## Local development
+## Local development 🧪
 
 Clone if you prefer a local virtual environment over `uvx`.
 
@@ -538,9 +551,9 @@ python server.py
 
 ---
 
-## Configuration reference
+## Configuration reference ⚙️
 
-All clients run the same underlying command:
+All clients run the same underlying command (full JSON examples are in [Quick install 🚀](#quick-install-) — not repeated here):
 
 | Part | Value |
 |------|-------|
@@ -559,11 +572,13 @@ All clients run the same underlying command:
 | **VS Code** | User MCP config or `.vscode/mcp.json` | `servers` (+ `"type": "stdio"`) |
 | **Claude Desktop** | `claude_desktop_config.json` | `mcpServers` |
 
-Copy-paste configs are in [Quick install](#quick-install).
+Copy-paste configs: [Quick install 🚀](#quick-install-).
+
+<a id="local-clone-no-uvx"></a>
 
 ### Local clone (no `uvx`)
 
-Replace `REPO_PATH` with the absolute path to your clone.
+Clone and install — see [Local development 🧪](#local-development-). Then point your MCP client at the venv Python:
 
 **Windows:**
 
@@ -591,15 +606,9 @@ Replace `REPO_PATH` with the absolute path to your clone.
 }}
 ```
 
-| Client | Config file |
-|--------|-------------|
-| Cursor | `.cursor/mcp.json` or user MCP settings |
-| VS Code | `.vscode/mcp.json` or user `mcp.json` ([docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)) |
-| Claude Desktop | `claude_desktop_config.json` |
-
 ---
 
-## MCP Registry
+## MCP Registry 📦
 
 Listed on the [official MCP Registry](https://registry.modelcontextprotocol.io) as:
 
@@ -610,7 +619,7 @@ Listed on the [official MCP Registry](https://registry.modelcontextprotocol.io) 
 
 ---
 
-## Troubleshooting
+## Troubleshooting 🔧
 
 ### Dependency resolution / `markitdown[all]` errors
 
@@ -626,7 +635,7 @@ VS Code's install link wrote the **URL as the command** instead of `uvx`. Fix:
 
 1. **MCP: Open User Configuration** (or `.vscode/mcp.json` in this repo)
 2. **Delete** entries like `my-mcp-server-*` where `"command"` starts with `vscode://`
-3. Use [`.vscode/mcp.json`](.vscode/mcp.json) from this repo, or paste the `servers` + `uvx` JSON from [VS Code install](#vs-code)
+3. Use [`.vscode/mcp.json`](.vscode/mcp.json) from this repo, or the JSON in [Install in VS Code 💻](#install-in-vs-code)
 4. **MCP: List Servers** → restart **document-converter**
 
 **Do not use the README `vscode://mcp/install?...` link** — it is unreliable in VS Code.
@@ -644,34 +653,15 @@ This comes from **Cursor or VS Code**, not this server:
 | 1 | **Fully quit** the editor, then reopen |
 | 2 | Install **[uv](https://docs.astral.sh/uv/)** for `uvx` installs |
 | 3 | Test: `uvx --from git+{REPO} --with {MARKITDOWN_EXTRAS} document-converter-mcp` (idle = normal for stdio) |
-| 4 | Use [Option B — local clone](#option-b--local-clone) if `uvx` fails |
+| 4 | Use [Local clone (no `uvx`)](#local-clone-no-uvx) if `uvx` fails |
 | 5 | **Settings → MCP** → remove and re-add the server |
 | 6 | Update Cursor/VS Code to the latest version |
 
-**Reliable colleague setup (clone + venv):**
-
-```bash
-git clone {REPO}.git
-cd document-converter
-python -m venv .venv
-.venv\\Scripts\\activate          # Windows
-pip install -r requirements.txt
-```
-
-```json
-{{
-  "mcpServers": {{
-    "{NAME}": {{
-      "command": "C:\\\\path\\\\to\\\\document-converter\\\\.venv\\\\Scripts\\\\python.exe",
-      "args": ["C:\\\\path\\\\to\\\\document-converter\\\\server.py"]
-    }}
-  }}
-}}
-```
+**Reliable fallback:** follow [Local development 🧪](#local-development-) and use the [local clone MCP config](#local-clone-no-uvx).
 
 ### Install button does nothing (Cursor on Windows)
 
-Use the copy-paste JSON in [Install in Cursor](#install-in-cursor) instead of the install badge.
+Use the copy-paste JSON in [Install in Cursor 🖱️](#install-in-cursor) instead of the install badge.
 
 ### Tools not visible
 
@@ -679,7 +669,7 @@ Reload MCP or restart the editor. Confirm the server is **enabled** (not red/dis
 
 ---
 
-## License
+## License 📜
 
 MIT License — see [LICENSE](LICENSE).
 
