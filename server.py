@@ -31,8 +31,9 @@ def convert_to_markdown(file_path: str) -> str:
     URLs (e.g. YouTube): saves youtube-{video_id}.md in the current directory.
 
     Supports PDF, Word (.docx), PowerPoint (.pptx), Excel (.xlsx/.xls),
-    Outlook (.msg), HTML, CSV, JSON, XML, images, ZIP archives, EPUB,
-    audio (.mp3/.wav), and YouTube URLs (via MarkItDown).
+    Outlook (.msg), HTML, CSV, JSON, plain text, EPUB, ZIP, Jupyter (.ipynb),
+    images (.jpg/.png), audio (.mp3/.wav/.m4a), and YouTube watch URLs.
+    Does not support .eml, legacy .doc/.ppt, or .gif/.webp images.
     """
 
     if not _is_url(file_path) and not os.path.exists(file_path):
