@@ -162,15 +162,17 @@ cursor://anysphere.cursor-deeplink/mcp/install?name=document-converter&config=ey
 
 ### VS Code
 
-Requires the [MCP extension](https://marketplace.visualstudio.com/items?itemName=modelcontextprotocol.mcp).
+Requires **VS Code 1.102 or newer** — MCP is [built into VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers). There is **no separate MCP extension** to install from the Marketplace.
 
 [**Install in VS Code**](vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22git%2Bhttps%3A//github.com/Zahid-Abbas-Ali-Baig/document-converter%22%2C%22--with%22%2C%22markitdown%5Bpdf%2Cdocx%2Cpptx%2Cxlsx%2Cxls%2Coutlook%2Caudio-transcription%2Cyoutube-transcription%5D%22%2C%22document-converter-mcp%22%5D%7D)
 
-Or **Command Palette** → **MCP: Install Server** → paste:
+Or use **Command Palette** (`Ctrl+Shift+P`) → **MCP: Add Server** and paste:
 
 ```
 vscode://mcp/install?%7B%22name%22%3A%22document-converter%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22git%2Bhttps%3A//github.com/Zahid-Abbas-Ali-Baig/document-converter%22%2C%22--with%22%2C%22markitdown%5Bpdf%2Cdocx%2Cpptx%2Cxlsx%2Cxls%2Coutlook%2Caudio-transcription%2Cyoutube-transcription%5D%22%2C%22document-converter-mcp%22%5D%7D
 ```
+
+Manual config: **MCP: Open User Configuration** (global) or create `.vscode/mcp.json` (workspace). See [Add and manage MCP servers](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
 
 ---
 
@@ -404,7 +406,7 @@ Replace `REPO_PATH` with the absolute path to your clone.
 | Client | Config location |
 |--------|-----------------|
 | Cursor | `.cursor/mcp.json` (project) or user MCP settings |
-| VS Code | MCP extension settings / `mcp.json` |
+| VS Code | User `mcp.json` or `.vscode/mcp.json` ([docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)) |
 | Claude Desktop | `claude_desktop_config.json` |
 
 ---

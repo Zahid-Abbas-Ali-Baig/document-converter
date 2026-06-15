@@ -211,15 +211,17 @@ For the latest upstream behavior, see the [MarkItDown documentation](https://git
 
 ### VS Code
 
-Requires the [MCP extension](https://marketplace.visualstudio.com/items?itemName=modelcontextprotocol.mcp).
+Requires **VS Code 1.102 or newer** — MCP is [built into VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers). There is **no separate MCP extension** to install from the Marketplace.
 
 [**Install in VS Code**]({vscode_link})
 
-Or **Command Palette** → **MCP: Install Server** → paste:
+Or use **Command Palette** (`Ctrl+Shift+P`) → **MCP: Add Server** and paste:
 
 ```
 {vscode_link}
 ```
+
+Manual config: **MCP: Open User Configuration** (global) or create `.vscode/mcp.json` (workspace). See [Add and manage MCP servers](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
 
 ---
 
@@ -453,7 +455,7 @@ Replace `REPO_PATH` with the absolute path to your clone.
 | Client | Config location |
 |--------|-----------------|
 | Cursor | `.cursor/mcp.json` (project) or user MCP settings |
-| VS Code | MCP extension settings / `mcp.json` |
+| VS Code | User `mcp.json` or `.vscode/mcp.json` ([docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)) |
 | Claude Desktop | `claude_desktop_config.json` |
 
 ---
